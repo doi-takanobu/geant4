@@ -1,0 +1,6 @@
+#ifndef _USERSTATICVARIABLES_HH_
+#define _USERSTATICVARIABLES_HH_
+
+int DOI_RUN = 0;
+
+#endif

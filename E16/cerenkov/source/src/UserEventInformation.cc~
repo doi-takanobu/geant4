@@ -1,0 +1,19 @@
+#include "UserEventInformation.hh"
+#include "globals.hh"
+
+UserEventInformation::UserEventInformation():BeamEnergy(0){}
+virtual UserEventInformation::~UserEventInformation(){}
+
+virtual void Print()
+{
+}
+
+void SetBeamEnergy(G4double E)
+{
+  BeamEnergy = E;
+}
+
+G4double GetBeamEnergy()
+{
+  return BeamEnergy;
+}
