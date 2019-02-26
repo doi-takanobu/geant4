@@ -1,0 +1,83 @@
+
+#include "RunAction.hh"
+#include "Analysis.hh"
+
+#include "G4Run.hh"
+#include "G4RunManager.hh"
+#include "G4UnitsTable.hh"
+#include "G4SystemOfUnits.hh"
+
+
+
+RunAction::RunAction()
+ : G4UserRunAction()
+{
+    // Get analysis manager
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    G4cout << "Using " << analysisManager->GetType() << G4endl;
+    analysisManager->SetActivation(true);
+
+    // Create directories
+    //analysisManager->SetHistoDirectoryName("histograms");
+    //analysisManager->SetNtupleDirectoryName("ntuple");
+    analysisManager->SetVerboseLevel(1);
+    //analysisManager->SetFirstHistoId(1);
+    analysisManager->SetFileName("telescope");
+    //analysisManager->SetHistoDirectoryName("histo");
+    // Book histograms, ntuple
+    //
+    
+    // Creating histograms
+//H1
+    G4int id = analysisManager->CreateH1("h1_0","Si", 400, 0., 10.*MeV);
+    analysisManager->SetH1Activation(id, true);
+    id = analysisManager->CreateH1("h1_1","NaI", 400, 0., 100.*MeV);
+    analysisManager->SetH1Activation(id, true);
+    id = analysisManager->CreateH1("h1_2","GAGG", 400, 0., 100.*MeV);
+    analysisManager->SetH1Activation(id, true);
+// H2
+     G4int id2 = analysisManager->CreateH2("h2_0","NaI vs Si", 200, 0, 10.*MeV, 200,  0., 30.*MeV);
+     analysisManager->SetH2Activation(id2, true);
+     id2 = analysisManager->CreateH2("h2_1","GAGG vs Si", 200, 0, 10.*MeV, 200,  0., 30.*MeV);
+	analysisManager->SetH2Activation(id2, true);
+ 
+}
+
+
+
+RunAction::~RunAction()
+{
+  delete G4AnalysisManager::Instance();  
+}
+
+
+
+void RunAction::BeginOfRunAction(const G4Run* /*run*/)
+{ 
+    
+  // Get analysis manager
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+  // Open an output file
+  //
+  // G4String fileName = "Pixel";
+  analysisManager->OpenFile();
+    //G4cout << "File " << fileName << " Open" <<G4endl;
+    
+}
+
+
+
+void RunAction::EndOfRunAction(const G4Run* /*run*/)
+{
+  // print histogram statistics
+  //
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+  // save histograms & ntuple
+  //
+  analysisManager->Write();
+  analysisManager->CloseFile();
+
+
+}

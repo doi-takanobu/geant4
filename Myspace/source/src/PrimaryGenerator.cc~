@@ -1,0 +1,69 @@
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// PrimaryGenerator.cc
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#include "PrimaryGenerator.hh"
+#include "G4ParticleGun.hh"
+#include "G4ParticleTable.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4IonTable.hh"
+
+//------------------------------------------------------------------------------
+  PrimaryGenerator::PrimaryGenerator()
+    : fpParticleGun1(0),fpParticleGun2(0) 
+//------------------------------------------------------------------------------
+{
+}
+
+//------------------------------------------------------------------------------
+  PrimaryGenerator::~PrimaryGenerator()
+//------------------------------------------------------------------------------
+{
+  delete fpParticleGun1;
+  delete fpParticleGun2;
+}
+
+//------------------------------------------------------------------------------
+  void PrimaryGenerator::GeneratePrimaries(G4Event* anEvent)
+//------------------------------------------------------------------------------
+{
+  G4double pos_X = 0.*cm;
+  G4double pos_Y = 0.5*cm;
+  G4double pos_Z = 10*cm;
+  G4ThreeVector position = G4ThreeVector(pos_X,pos_Y,pos_Z);
+
+  G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+  
+  G4String particlename = "proton";
+  G4double energy = 80.*MeV;
+  G4ThreeVector momentumDirection = G4ThreeVector(0.,0.,-1.);
+  G4ParticleDefinition* particle = particleTable->FindParticle(particlename);
+  fpParticleGun1 = new G4ParticleGun();
+  {
+    fpParticleGun1->SetParticleDefinition(particle);
+    fpParticleGun1->SetParticleEnergy(energy);
+    fpParticleGun1->SetParticleMomentumDirection(momentumDirection);
+  }
+
+  //fpParticleGun2 = new G4ParticleGun();
+  //{
+    //fpParticleGun2->SetParticleDefinition(particle);
+    //fpParticleGun2->SetParticleEnergy(energy);
+    //fpParticleGun2->SetParticleMomentumDirection(momentumDirection);
+    //}
+  
+  fpParticleGun1->SetParticlePosition(position);
+
+  //pos_Y = -0.5*cm;
+  //position = G4ThreeVector(pos_X,pos_Y,pos_Z);
+
+  //fpParticleGun2->SetParticlePosition(position);
+
+  G4int LoopMax = 1;
+ 
+
+  for(G4int ii=0;ii<LoopMax;ii++){
+    fpParticleGun1->GeneratePrimaryVertex(anEvent);
+    //fpParticleGun2->GeneratePrimaryVertex(anEvent);
+  }
+}
+
