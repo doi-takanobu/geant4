@@ -65,8 +65,8 @@ G4VPhysicalVolume* Geometry::ConstructDetector()
 // Define 'Lead-Glass Detector'===========================================
    // Define the shape of solid
    G4double leng_X_MAIKo = 102.4*mm;
-   G4double leng_Y_MAIKo = 102.4*mm;
-   G4double leng_Z_MAIKo = 140.*mm;
+   G4double leng_Y_MAIKo = 140.*mm;
+   G4double leng_Z_MAIKo = 102.4*mm;
    G4Box* solid_MAIKo = new G4Box("Solid_MAIKo", leng_X_MAIKo/2., leng_Y_MAIKo/2. , leng_Z_MAIKo/2.); 
 
    // Define logical volume
